@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang='es'>
+<head>
+  <meta charset='utf-8'>
+  <title>Nomenclador de Usuarios</title>
+
+
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" media="screen">     
+  <link href="{{STATIC_URL}}css/base.css" rel="stylesheet" media="screen">   
+  <script language="Javascript" type="text/Javascript">  
+
+      var expacum = "";
+
+      function Agregar_usuario (exp) {
+        expacum = "";
+        var y = new XMLHttpRequest();
+            y.onload = function() {   
+
+                /*var resp_array = y.response.split(",");             
+
+                for (var i = 0; i <= 4; i++) { 
+                  var campo = resp_array[i];
+                      campo = campo.split("=");
+                  var nombre = campo[0];
+                  var valor = campo[1];
+                  nombre = '#fm'+nombre+'_value';
+                  var obj = $(nombre);
+                  obj
+                  obj.innerHTML = valor;
+                  obj.HTML = valor;
+
+                    }*/
+
+                $('#prueba1234').html(y.response);
+                $('#modificarform').modal('show');
+
+            };
+            y.open('GET', '/faddeval_usuario/?user={{user}}&exp='+exp);
+            y.send();      
+
+      };
+
+      /*Borrar trabajador de la lista a evaluar */
+      function borrar_uaeval (exp) {
+        expacum = "";
+        var y = new XMLHttpRequest();
+            y.onload = function() {   
+
+                /*var resp_array = y.response.split(",");             
+
+                for (var i = 0; i <= 4; i++) { 
+                  var campo = resp_array[i];
+                      campo = campo.split("=");
+                  var nombre = campo[0];
+                  var valor = campo[1];
+                  nombre = '#fm'+nombre+'_value';
+                  var obj = $(nombre);
+                  obj
+                  obj.innerHTML = valor;
+                  obj.HTML = valor;
+
+                    }
+
+                
+                $('#modificarform').modal('show');
+                $('#exp'+exp).attr('hidden', 'hidden');
+                $('#exp'+exp).remove();*/
+      
+                $('#exp'+exp).attr('hidden',"True");
+
+
+            };
+            y.open('GET', '/fdeleval_usuario/?user={{user}}&exp='+exp);
+            y.send();      
+
+      };
+
+
+      function seleccionar (exp) {
+     
+         if ($(exp).hasClass("ok")){
+            $(exp).removeClass("ok");
+            $(exp).removeClass("glyphicon-ok");
+            $(exp).addClass("glyphicon-unchecked");
+            $(exp).css("color","white");
+            expacum = expacum.replace(exp, "");
+
+          }else{
+            $(exp).addClass("ok");
+            $(exp).addClass("glyphicon-ok");
+            $(exp).removeClass("glyphicon-unchecked");
+            $(exp).css("color","lime");
+            expacum = expacum + exp;
+
+          };  
+      };
+
+      function modificar (exp) {
+
+        while (expacum.indexOf("#a") >= 0)
+        {
+             expacum = expacum.replace("#a", ","); 
+        };
+        if (expacum[0]== ','){
+          expacum = expacum.replace(",", ""); 
+        };
+        var noexp = "{{evaluador.noexp}}";    
+        $('#modificarform').modal('hide');
+
+
+        var y = new XMLHttpRequest();
+            y.onload = function() {   
+              $('#tabla').html(y.response);
+
+            };
+            y.open('GET', '/seleccionar_usuario/?exp={{evaluador.noexp}}&usuarios='+expacum+'');
+            y.send();
+
+      };
+  </script>
+  
+</head>
+<body>
+     <h3>Datos del Evaluador</h3>
+    <table class="table table-bordered ">
+  <input hidden = "hidden" name="data" id="data"  type="text"  class="" value= "0">
+  <tr>  <td>                   
+       <b> {{evaluador.noexp}} </b></a></td>
+        <td>{{evaluador.nombre}}</td>
+        <td>{{evaluador.cargo}}</td>
+
+    </tr>
+
+	</table>     
+  <!-- <a class="btn btn-default btn-xs " title="Le añade al evaluador {{evaluador.nombre}} otro trabajador para ser evaluado " onclick="Agregar_usuario('{{evaluador.noexp}}');" >Añadir trabajador a evaluar</a> 
+  <br><br>-->
+  Evalua a:
+ <br><br>
+  <div id = "tabla">
+                             
+    
+  <table class="table table-bordered ">
+   <thead>
+        <th># Expediente</th>
+        <th># Identidad</th>
+        <th>Nombre</th>
+        <th>Cargo</th>
+        <th><a class="btn btn-default btn-xs " onclick="Agregar_usuario('{{evaluador.noexp}}');" >
+            <span style=" color: blue" class="glyphicon glyphicon-plus" title="Añadir Trabajador" ></span></a></th>
+
+    </thead>
+
+
+
+   {% for elemento in sujetos %}
+    <tr id = "exp{{elemento.noexp}}">  
+        <td align="center" >
+          
+        {{elemento.noexp}} </td>
+        <td  align="center" >{{elemento.cid}}</td>
+        <td>{{elemento.nombre}}</td>
+        <td>{{elemento.cargo}}</td>
+
+
+        <td class="btngrid lineagrid">
+            <a class="btn btn-default btn-xs " onclick="borrar_uaeval('{{elemento.noexp}}');" >
+            <span style=" color: #ff4f00" class="glyphicon glyphicon-trash" title="" ></span></a>
+        </td>
+      
+    </tr>
+    {% endfor %}
+
+    </table>
+
+    </div>
+
+    
+    <div style= "max-height: 140px;" id = "prueba1234">
+                             
+    </div>
+
+    <!--  Formulario para borrar el usuario   -->  
+    <div id= "borrarform" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content alert-danger">
+          <div class="modal-header ">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Borrar Usuario</h4>
+          </div>
+          <div id = "lineastexto" class="modal-body">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default btn-info" data-dismiss="modal">Cerrar</button>
+            <button  onclick = "borrar();return true;" id = "borrard" type="button" class="btn btn-danger">Borrar</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+   
+    
+   <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"></script>    
+</body>
+</html>
+	

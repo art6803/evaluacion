@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang='es'>
+<head>
+  <meta charset='utf-8'>
+  <title>Trabajadores por Area </title>
+  <link rel='shortcut icon' href='{{STATIC_URL}}img/icono.png'>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" media="screen">
+  <link href="{{STATIC_URL}}css/base.css" rel="stylesheet" media="screen">
+  <script language="Javascript" type="text/Javascript">
+
+      var expacum = "";
+
+      function selitem () {
+         var area = $('#sarea')[0].value;
+     
+         var src='/areastrabajlst/?id='+area;
+         document.getElementById('areatrabajad').src = src; 
+      };    
+
+      function modificar () {
+
+        var area = $('#sarea')[0].value;
+
+        while (expacum.indexOf("#a") >= 0)
+        {
+             expacum = expacum.replace("#a", ","); 
+        };
+        if (expacum[0]== ','){
+          expacum = expacum.replace(",", ""); 
+        };
+        
+        $('#modificarform').modal('hide');
+        // Create a form
+        var fd = new FormData();
+        fd.append("id", area); 
+        fd.append("usuarios", expacum); 
+        fd.append("csrfmiddlewaretoken", "{{ csrf_token }}");
+
+        var y = new XMLHttpRequest();
+            y.onload = function() {   
+              // $('#tabla').html(y.response);
+              document.getElementById('areatrabajad').src = '/areastrabajlst/?id=' + area; 
+
+            };
+            y.open('POST', '/areatrabajadfm/');
+            y.send(fd);
+            expacum = "";
+
+      };
+
+      function seleccionar (exp) {
+     
+         if ($(exp).hasClass("ok")){
+            $(exp).removeClass("ok");
+            $(exp).removeClass("glyphicon-ok");
+            $(exp).addClass("glyphicon-unchecked");
+            $(exp).css("color","white");
+            expacum = expacum.replace(exp, "");
+
+          }else{
+            $(exp).addClass("ok");
+            $(exp).addClass("glyphicon-ok");
+            $(exp).removeClass("glyphicon-unchecked");
+            $(exp).css("color","lime");
+            expacum = expacum + exp;
+
+          };  
+      };
+
+
+      function ver_editar () {
+
+      var y = new XMLHttpRequest();
+        var area = $('#sarea')[0].value;
+        y.onload = function() {             
+
+                $('#prueba1234').html(y.response);
+                $('#modificarform').modal('show');
+
+        };
+        y.open('GET', '/areatrabajadfm/?id='+area);
+        y.send();
+
+          };
+  </script>
+</head>
+<body class="body90">
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="text-center col-xs-8 col-md-8">
+            <h3>Trabajadores por Area</h3>
+        </div>
+
+        <div class="container">
+            <div class="col-xs-1 col-md-1"></div>
+            <div class="col-xs-10  col-md-10">
+                <div class="col-xs-1 col-md-1">
+                <label for="Indicadores">Areas:</label><br></div>
+                <div class="col-xs-11  col-md-11">
+                <SELECT onchange="selitem();"  id="sarea" NAME="Areas" SIZE="1" >
+                    {% for elemento in areas %}
+                       <OPTION {% if ids == elemento.id %} selected {% endif %} value="{{elemento.id}}">{{elemento.nombre}}</OPTION>
+                    {% endfor %}
+                </SELECT>
+                </div>
+            </div><!-- /.col-xs-11 -->
+        </div>
+    </div>
+
+     <div class="container"> 
+        <div hidden ="hidden" class="col-xs-11  col-md-11">
+           <a class="btn btn-default btn-xs pull-right" onclick="ver_editar();" >
+            <span style=" color: blue" class="glyphicon glyphicon-plus" title="Agregar trabajador" ></span>&nbsp;&nbsp;Agregar trabajador al area</a>
+        </div>
+                
+        <iframe class="col-xs-12  col-md-12" frameborder="0" id="areatrabajad"  src="{{frame}}" style="margin=0px; height:390px; width:98%">
+
+        </iframe>
+   </div>
+  </div>
+
+    <div id = "prueba1234">
+    </div>
+
+
+
+       </div>
+  </div>
+</div>
+
+</div>
+   <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"></script>
+</body>
+</html>
+
+
+

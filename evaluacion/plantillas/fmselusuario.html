@@ -1,0 +1,52 @@
+     
+    <div id= "modificarform" class="modal fade" >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button  tabindex= "-1" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Trabajadores sin Evaluador asignado</h4>
+          </div>
+          <div class="modal-body pre-scrollable" style="max-height: 240px;">
+            
+            
+            <table class="table table-bordered ">
+   <thead><th hidden="hidden"></th>
+        <th># Expediente</th>
+        <th># Identidad</th>
+        <th>Nombre</th>
+        <th hidden="hidden">Cargo</th>
+    </thead>
+
+
+
+   {% for elemento in sineval %}
+    <tr><td hidden="hidden" class="action-checkbox"></td>   
+        <td align="center" >
+          
+        {{elemento.noexp}} </td>
+        <td  align="center" >{{elemento.cid}}</td>
+        <td>{{elemento.nombre}}</td>
+        <td hidden="hidden">{{elemento.cargo}}</td>
+
+
+        <td class="btngrid lineagrid">
+            <a  class="btn btn-default btn-xs " onclick="seleccionar('#a{{elemento.noexp}}');" >
+            <span id="a{{elemento.noexp}}" style=" color: white" class="glyphicon glyphicon-unchecked" title="" ></span></a>
+        </td>
+      
+    </tr>
+    {% endfor %}
+
+    </table>
+      
+          
+          </div>
+          <div class="modal-footer">
+            <button tabindex= "8" type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            <button onclick = "modificar('{{evaluador.noexp}}');return true;" id = "enviard" type="button" class="btn btn-primary">Guardar Cambios</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal del_glclass -->
+        
+

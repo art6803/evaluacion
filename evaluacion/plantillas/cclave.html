@@ -1,0 +1,52 @@
+     
+    <div id= "modificarform" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button  tabindex= "-1" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Datos del Trabajador</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+            <div class="col-md-1"></div><div class="col-md-1"></div></div>
+              <form action="/usuario_clv/" method="post" id="login-form">
+              <fieldset>
+
+              {% csrf_token %}
+                <input type="hidden" name="userexp" value="{{usuario.noexp}}" />
+                 
+                <div class = "row">
+                    <div class= "col-xs-3 col-md-3 vcentradov">Nombre de usuario:</div>
+                    <div class= "col-xs-8 col-md-8"><input class="form-control " id="id_username" maxlength="254" name="username" type="text" value="{{usuario.nombre}}" /></div>
+                </div>
+                {% if not su %}
+                  <div class = "row">
+                      <div class= "col-xs-3  col-md-3 centradov">Contraseña actual:</div>
+                      <div class= "col-xs-3 col-md-3"><input class="form-control " id="id_password" maxlength="254" name="old_password" type="password" value="*******" /></div>
+                  </div>
+                {% endif %}
+                <div class = "row">
+                    <div class= "col-xs-3  col-md-3 centradov">Contraseña nueva:</div>
+                    <div class= "col-xs-3  col-md-3 "><input class="form-control "  id="new_password1" maxlength="254" name="new_password1" type="password" value="*******" /></div>
+                </div>
+                <div class = "row">
+                    <div class= "col-xs-3  col-md-3 centradov">repetir Contraseña:</div>
+                    <div class= "col-xs-3 col-md-3 "><input class="form-control "  id="new_password2" maxlength="254" name="new_password2" type="password" value="*******" /></div>
+                </div>
+
+                  <input type="hidden" name="this_is_the_changepassword_form" value="1" />
+                  <input type="hidden" name="next" value="/" />                       
+                
+                </fieldset>
+                <div class="modal-footer">
+                    <button tabindex= "8" type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button id = "enviard" type="submit"  class="btn btn-primary">Guardar</button>
+                </div>
+
+              </form>
+    </div>
+          
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal del_glclass -->
+        

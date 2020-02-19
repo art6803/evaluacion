@@ -1,0 +1,30 @@
+     
+<div id= "modificarform" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button  tabindex= "-1" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Editar Area</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+        <div class="col-md-1"></div><div class="col-md-1"></div></div>
+        <form  action="/area/" method="post" id="ModificaArea">{% csrf_token %}
+            <fieldset>
+               <input name="id"      value="{{area.id}}" type="hidden"  id="id" >
+               <div class = "row">
+                  <div class= "col-xs-2">Area :</div>
+                  <div class= "col-xs-9"> <input autofocus = "True" name="nombre" id="fmnombre"  type="text"  class="form-control" value= "{{area.nombre}}"></div>
+              </div>                                 
+            </fieldset>
+            <div class="modal-footer">
+              <button tabindex= "8" type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+              <input type="submit" value="Guardar" class="btn btn-primary"/>                      
+            </div>
+        </form>
+      </div>              
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal del_glclass -->
+        
+

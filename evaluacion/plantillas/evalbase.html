@@ -1,0 +1,45 @@
+<!-- evalbase.html -->
+<!DOCTYPE html>
+<html lang='es'>
+<head>
+  <meta charset='utf-8'>
+  <title>{% block titulo %}{% endblock %}</title>
+  <link rel='shortcut icon' href='{{STATIC_URL}}img/icono.png'>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" media="screen">     
+  <link href="{{STATIC_URL}}css/base.css" rel="stylesheet" media="screen">   
+  <script language="Javascript" type="text/Javascript">  
+   {% block javascript %}{% endblock %}
+  </script>
+</head>
+<body>
+
+<div class="container-fluid">
+  <div class="row">
+      <div class="col-xs-1 col-md-1"></div>
+    <div class="col-xs-10 col-md-10">
+    <h3>Datos del Evaluador</h3>
+    <table class="table table-bordered ">
+    <input hidden = "hidden" name="data" id="data"  type="text"  class="" value= "0">
+    <thead>  <th>                   
+          {{evaluador.noexp}} </a></th>
+          <th>{{evaluador.nombre}}</th>
+          <th>{{evaluador.cargo}}</th>
+
+     </thead>
+  </table> 
+  </div> 
+{% block encabezado %}   
+{% endblock %}
+</div>
+</div>
+{% block contenido %} 
+
+  
+{% endblock %}
+{% block piedepagina %}   
+{% endblock %}
+</div>
+   <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"></script>    
+</body>
+</html>

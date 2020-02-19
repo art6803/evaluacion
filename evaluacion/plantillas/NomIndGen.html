@@ -1,0 +1,119 @@
+{% extends 'nombase.html' %}
+
+  {% block titulo %} Nomenclador de Usuarios {% endblock %}
+
+   {% block javascript %}
+      function Valida(formulario){
+         formulario.peso.value = formulario.peso.value.replace(',', '.');
+
+         var peso = formulario.peso.value * 100;
+         var maximo = formulario.maxval.value * 100;
+         if ( peso > maximo){
+
+            Alert('Solo se permiten números menores ó iguales a ' + String( formulario.maxval.value));
+            return false;
+
+         } else{ return true; }
+      };
+
+
+      function modificar_indicador (id) {
+        var y = new XMLHttpRequest();
+            y.onload = function() {   
+
+                /*var resp_array = y.response.split(",");             
+
+                for (var i = 0; i <= 4; i++) { 
+                  var campo = resp_array[i];
+                      campo = campo.split("=");
+                  var nombre = campo[0];
+                  var valor = campo[1];
+                  nombre = '#fm'+nombre+'_value';
+                  var obj = $(nombre);
+                  obj
+                  obj.innerHTML = valor;
+                  obj.HTML = valor;
+
+                    }*/
+
+                $('#prueba1234').html(y.response);
+                $('#modificarform').modal('show');
+
+            };
+            y.open('GET', '/modindgen/?id='+id);
+            y.send();      
+
+      };
+
+      function salva (id) {
+        var y = new XMLHttpRequest();
+            y.onload = function() {   
+
+ 
+                $('#prueba1234').html(y.response);
+                $('#modificarform').modal('show');
+
+            };
+            y.open('GET', '/modindgen/?id='+id);
+            y.send();      
+
+      };
+
+      function buscar_indgen() {
+        
+
+      };
+
+      function borrar_indicador(id) {
+        
+
+      };
+
+{% endblock %}
+  
+
+    {% block funcaction %}/indgen/{% endblock %}
+    {% block tituloh %}Indicadores Generales{% endblock %}
+
+
+
+{% block contenido %}   
+
+
+    <table class="table table-bordered ">
+    <thead><th hidden="hidden"></th>
+        <th>Indicador</th>
+        <th>Peso</th>
+        <th></th>
+        <th><a class="btn btn-default btn-xs " onclick="modificar_indicador('');" >
+            <span style=" color: #4C8FD6" class="glyphicon glyphicon-plus" title="Añadir indicador" ></span></a></th>
+    </thead>
+
+    {% for elemento in indicadores %}
+      <tr id = "id{{elemento.id}}">
+        <td hidden="hidden">{{elemento.id}}</td>   
+        <td class=" text-left"  >{{elemento.nombre}}</td>
+        <td>{{elemento.peso}}</td>
+        <td class="btngrid lineagrid">
+          <a class="btn btn-default btn-xs " href="/borrindgen/?id={{elemento.id}}"  >
+          <span style=" color: #ff4f00" class="glyphicon glyphicon-trash" title="Borrar el indicador" ></span></a>
+        </td>
+        <td class="btngrid lineagrid">
+          <a class="btn btn-default btn-xs " onclick="modificar_indicador({{elemento.id}});" >
+          <span style=" color: #4C8FD6" class="glyphicon glyphicon-pencil" title="Editar el indicador" ></span></a>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+  
+{% endblock %}  
+{% block contenido1 %}  
+  <div id = "prueba1234">
+                             
+  </div>    
+{% endblock %} 
+
+
+     
+
+

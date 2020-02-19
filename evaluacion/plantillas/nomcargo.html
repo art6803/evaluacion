@@ -1,0 +1,113 @@
+{% extends 'nombase.html' %}
+
+  {% block titulo %} Nomenclador de Cargos {% endblock %}
+  {% block javascript %}
+
+
+        function ver_editar (cargo) {
+
+          var y = new XMLHttpRequest();
+            y.onload = function() {   
+
+                /*var resp_array = y.response.split(",");             
+
+                for (var i = 0; i <= 4; i++) { 
+                  var campo = resp_array[i];
+                      campo = campo.split("=");
+                  var nombre = campo[0];
+                  var valor = campo[1];
+                  nombre = '#fm'+nombre+'_value';
+                  var obj = $(nombre);
+                  obj
+                  obj.innerHTML = valor;
+                  obj.HTML = valor;
+
+                    }*/
+
+                    $('#prueba1234').html(y.response);
+                  $('#modificarform').modal('show');
+
+            };
+            y.open('GET', '/ver_cargo/?id='+cargo);
+            y.send();    
+        
+
+          };
+
+
+
+  {% endblock %}
+
+  {% block funcaction %}/cargos/?{% endblock %}
+  {% block tituloh %}Nomenclador de Cargos{% endblock %}
+
+
+
+{% block contenido %} 
+	
+    <table  class="table table-bordered ">
+    <thead><th hidden="hidden"></th>
+       
+        <th>&nbsp;Cargos</th>
+        <th><a class="btn btn-default btn-xs " onclick="ver_editar(-1);" >
+            <span style=" color: blue" class="glyphicon glyphicon-plus" title="Añadir Cargo" ></span></a></th>
+        
+    </thead>
+
+
+
+    {% for elemento in cargos %}
+	  <tr><td hidden="hidden" class="action-checkbox"></td>
+      <!-- <td class="btngrid lineagrid">
+            <a class="btn btn-default btn-xs " href="/seleccionar_cargo/?id={{elemento.id}}" >
+            <span style=" color: {% if not elemento.completo %}#70B3DC{% else %}#274383{% endif %}" class="glyphicon glyphicon-list" title=" Asociar Indicadores a este cargo " ></span></a>
+        </td> -->
+	  
+	      <td  class=" text-left"  >
+
+        <!--{% if not elemento.completo %} style=" color: red"   title= "Cargo sin indicadores especificos" {% else %}#000000{% endif %} -->
+             &nbsp;&nbsp;
+            <!-- <a  href="/seleccionar_cargo/?id={{elemento.id}}" >
+                {% if elemento.completo %} <b>
+              {% endif %} 
+
+             
+             {% if elemento.completo %} </b>
+              {% endif %}  
+             </a>   -->
+             {{elemento.nombre}} 
+           </td>
+           <td class="btngrid lineagrid">
+            <a class="btn btn-default btn-xs " onclick="ver_editar({{elemento.id}});" >
+            <span style=" color: #4C8FD6" class="glyphicon glyphicon-pencil" title="Editar <{{ elemento.nombre}}>" ></span></a>
+        </td>
+
+
+    </tr>
+    {% endfor %}
+	</table>
+ 
+{% endblock %}
+{% block contenido1 %}   
+<div id = "prueba1234">
+                             
+    </div>
+
+   <ul class="pager pull-right">
+        <!-- li class="previous" ><a href="/acapite/crear" onclick="">Nuevo</a></li> -->    
+
+
+        {% if cargos.has_previous %}
+            <li class="previous"><a href="/cargos/?pag=1">Inicio</a></li>
+            <li ><a href="/cargos/?pag={{ cargos.previous_page_number }}">Anterior</a></li>                
+        {% endif %}
+        
+        {% if cargos.has_next %}
+            <li><a href="/cargos/?pag={{ cargos.next_page_number }}">Siguiente</a></li>
+            <li class=""><a href="/cargos/?pag={{ cargos.paginator.num_pages }} ">Final</a></li>                
+        {% endif %}
+        <li class = "next  disabled"><a id= "paginaactual" href="/cargos/?pag={{ cargos.number }}"> pag. {{ cargos.number }} de  {{ cargos.paginator.num_pages }}</a><li>
+    </ul> 
+{% endblock %}	
+
+

@@ -1,0 +1,263 @@
+
+{% extends 'nombase.html' %}
+//usuarios.html
+{% block titulo %} Nomenclador de Usuarios {% endblock %}
+{% block javascript %}
+
+
+        function sendMail(usuario) {
+            var y = new XMLHttpRequest();
+                y.onload = function() {
+                    var link = y.response;
+                    window.location.href = link;
+                };
+                y.open('GET', '/usuario_email/?exp='+usuario);
+                y.send();
+        };
+
+        function seleccionar_usuario(usuario) {
+            /* document.getElementById('frameprcpl').src = src; */      
+            return;
+        };    
+        
+        
+
+
+        function cambia_clave(usuario) {
+            var y = new XMLHttpRequest();
+                y.onload = function() {     
+
+                    /*var resp_array = y.response.split(",");               
+
+                    for (var i = 0; i <= 4; i++) { 
+                        var campo = resp_array[i];
+                            campo = campo.split("=");
+                        var nombre = campo[0];
+                        var valor = campo[1];
+                        nombre = '#fm'+nombre+'_value';
+                        var obj = $(nombre);
+                        obj
+                        obj.innerHTML = valor;
+                        obj.HTML = valor;
+
+                    }*/
+
+                    $('#usuario_clv').html(y.response);
+                    $('#modificarform').modal('show');
+
+                };
+                y.open('GET', '/usuario_clv/?exp='+usuario);
+                y.send();    
+                
+
+            };
+
+        function ver_editar (usuario) {
+
+        	var y = new XMLHttpRequest();
+		        y.onload = function() {		
+
+		            /*var resp_array = y.response.split(",");	            
+
+		            for (var i = 0; i <= 4; i++) { 
+		            	var campo = resp_array[i];
+		            	    campo = campo.split("=");
+		            	var nombre = campo[0];
+		            	var valor = campo[1];
+		            	nombre = '#fm'+nombre+'_value';
+		            	var obj = $(nombre);
+		            	obj
+		            	obj.innerHTML = valor;
+		            	obj.HTML = valor;
+
+                    }*/
+
+                    $('#prueba1234').html(y.response);
+					$('#modificarform').modal('show');
+
+		        };
+		        y.open('GET', '/usuario/?id='+usuario+'&pag={{ usuarios.number }}&tipo={{tipo}}');
+		        y.send();    
+				
+
+  		    };
+
+
+	    function importar() {
+	    var fichero =  "file:\\\\" +$('#importarfichero #id_fichero').val().trim();
+
+		    var x = new XMLHttpRequest();
+		    x.onload = function() {
+		        // Create a form
+		        var fd = new FormData();
+		        fd.append("upfile", x.response); // x.response is a Blob object
+		        fd.append("csrfmiddlewaretoken", "{{ csrf_token }}");
+		 
+		        // Upload to your server
+		        var y = new XMLHttpRequest();
+		        y.onload = function() {
+		            alert('Fichero subido!!');
+		        };
+		        y.open('POST', '/gestion/prova/');
+		        y.send(fd);
+		    };
+		    x.responseType = 'blob';  
+		    x.open('GET', fichero, true);
+		    x.send();
+	    };
+
+          function UpdateVars(){
+
+            $('#tabladin').modal('hide');
+            filas = $('#id_filas').val();
+            columnas = $('#id_columnas').val();
+            var htmlStr = ''; 
+            texto = '';
+            for (var i = 1; i <= columnas; i++) { 
+                id = "#id_col"+i;
+                htmlStr = $(id).html();
+                htmlStr.replace(';','_');
+                texto = texto + htmlStr+":"+i + ";"      
+            } 
+            $('#fencabezados').val(texto);    
+            // actualiza el input que tiene los textos de las columnas   
+
+            texto = '';
+            for (var i = 1; i <= filas; i++) {  
+                id = "#id_linea"+i;
+                htmlStr = $(id).html();
+                htmlStr.replace(';','_');
+                texto = texto + htmlStr+":"+i + ";"             
+
+            } 
+            $('#flineas').val(texto);   
+            // actualiza el input que tiene los textos de las lineas 
+
+            texto = '';
+            for (var i = 2; i <= columnas; i++) { 
+                id = "#id_total"+i;
+                htmlStr = $(id).html();
+                htmlStr.replace(';','_');
+                texto = texto + htmlStr+";"
+            }
+            texto[texto.length - 1] = "";
+            $('#ftotales').val(texto);  
+            // actualiza el input que tiene los datos de los campos que se van a totalizar 
+            return ;
+        }
+
+{% endblock %}
+{% block funcbuscar %}/usuarios/{% endblock %}
+{% block tituloh %}Nomenclador de Trabajadores{% endblock %}
+{% block contenido %}
+
+    <table class="table table-bordered ">
+    <thead><th hidden="hidden"></th>
+        <th width="100px" class="text-center" ># Expediente</th>
+        <th width="120px" class="text-center" ># Identidad</th>
+        <th>&nbsp;Nombre</th>
+        {% if tipo == "2" %}
+           <th></th>
+
+
+        {% endif %}
+        <th></th>
+       <!-- <th></th> -->
+        <th><a class="btn btn-default btn-xs " onclick="ver_editar(-1);" >
+            <span style=" color: blue" class="glyphicon glyphicon-plus" title="Añadir Trabajador" ></span></a></th>
+        <th  hidden="hidden" >Cargo</th>
+        <th  hidden="hidden" >es evaluador</th>
+        <th  hidden="hidden" >es evaluado</th>
+    </thead>
+    {% for elemento in usuarios %}
+	  <tr><td hidden="hidden" class="action-checkbox"></td>	  
+	      <td align="center" >
+                <a title="Seleccionar evaluador " href="/seleccionar_usuario/?exp={{elemento.noexp}}" >
+                <b> {{elemento.noexp}} </b></a></td>
+        <td  align="center" >{{elemento.cid}}</td>
+        <td {% if elemento.ok %} title="Es evaluador"{% endif %}  class=" text-left"  >{% if elemento.ok %}<b>{% endif %}&nbsp;{{elemento.nombre}}{% if elemento.ok %}</b>{% endif %}</td>
+        <td hidden >{{elemento.cargo}}</td>
+
+        <td  hidden="hidden" >{{elemento.evaluador}}</td>
+        <td  hidden="hidden" >{{elemento.evaluado}}</td>
+       <!-- <td class="btngrid lineagrid">
+            <a class="btn btn-default btn-xs " onclick="cambia_clave('{{elemento.noexp}}');" >
+            <span style=" color: #428BCA" class="glyphicon glyphicon-lock" title="Cambiar clave" ></span></a>
+ 
+     
+        </td>-->
+        {% if tipo == "2" %}
+            <td class="btngrid lineagrid">
+              <a class="btn btn-default btn-xs " onclick="sendMail('{{elemento.noexp}}'); return false" >
+              <span style=" color: #5FBA7D" class="glyphicon glyphicon-envelope" title="" ></span></a>
+            </td>
+
+
+        {% endif %}
+        <td class="btngrid lineagrid clickable-row">
+              <a class="btn btn-default btn-xs " href="/d_usr/?noexp={{elemento.noexp}}" >
+              <span style=" color: #ff4f00" class="glyphicon glyphicon-trash" title="" ></span></a>
+        </td>
+        <td class="btngrid lineagrid">
+            <a class="btn btn-default btn-xs " onclick="ver_editar({{elemento.id}});" >
+            <span style=" color: #4C8FD6" class="glyphicon glyphicon-pencil" title="Editar <{{ elemento.nombre}}>" ></span></a>
+        </td>
+    </tr>
+    {% endfor %}
+	</table>
+
+
+
+{% endblock %}
+{% block contenido1 %}
+   <div class="text-center col-xs-12 col-md-12">     
+   
+    <ul class="pager pull-left">        
+      <li class=""><a name="options" id="1" href="/usuarios/?pag=1&tipo=1" title="Ver todos los trabajadores" > Todos       </a></li>
+      <li class=""><a name="options" id="2" href="/usuarios/?pag=1&tipo=2" title="Ver solo los evaluadores" > Evaluadores </a></li>
+      <li class=""><a name="options" id="3" href="/usuarios/?pag=1&tipo=3" title="Ver los trabajadores que faltan por asignarle un evaluador" > Sin evaluador </a></li>   
+      <li class=""><a name="options" id="4" href="/usuarios/?pag=1&tipo=4" title="Ver los administradores del sistema" > Administrador </a></li>
+      <li class=""><a name="options" id="5" href="/usuarios/?pag=1&tipo=5" title="Ver las bajas" > Bajas </a></li>
+    </ul> 
+    
+    <ul class="pager pull-right">
+        <!-- li class="previous" ><a href="/acapite/crear" onclick="">Nuevo</a></li> -->
+
+        {% if usuarios.has_previous %}
+            <li class="previous"><a href="/usuarios/?pag=1&tipo={{tipo}}">Primero</a></li>
+            <li ><a href="/usuarios/?pag={{ usuarios.previous_page_number }}&tipo={{tipo}}">Anterior</a></li>                
+        {% endif %}
+        
+        {% if usuarios.has_next %}
+            <li><a href="/usuarios/?pag={{ usuarios.next_page_number }}&tipo={{tipo}}">Siguiente</a></li>
+            <li class=""><a href="/usuarios/?pag={{ usuarios.paginator.num_pages }}&tipo={{tipo}} ">Ultimo</a></li>                
+        {% endif %}
+        <li class = "next  disabled"><a id= "paginaactual" href="/usuarios/?pag={{ usuarios.number }}&tipo={{tipo}}"> pag. {{ usuarios.number }} de  {{ usuarios.paginator.num_pages }}</a><li>
+    </ul> 
+    <div id = "prueba1234">
+                             
+    </div>
+    <div id = "usuario_clv">
+                             
+    </div>
+    <!--  Formulario para borrar el usuario   -->  
+    <div id= "borrarform" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content alert-danger">
+          <div class="modal-header ">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Borrar Usuario</h4>
+          </div>
+          <div id = "lineastexto" class="modal-body">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default btn-info" data-dismiss="modal">Cerrar</button>
+            <button  onclick = "borrar();return true;" id = "borrard" type="button" class="btn btn-danger">Borrar</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    </div>
+{% endblock %}    
+
+	

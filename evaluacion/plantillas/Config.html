@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang='es'>
+<head>
+  <meta charset='utf-8'>
+  <title>Evaluacion de Trabajadores - {% block titulo %}{% endblock %}</title>
+
+  <link rel='shortcut icon' href='{{STATIC_URL}}img/icono.png'>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" media="screen">     
+  <link href="{{STATIC_URL}}css/base.css" rel="stylesheet" media="screen">     
+</head>
+<body>
+
+<div class="container">
+  <div class="text-center col-xs-12 col-md-12">
+
+
+      <div class="col-xs-12 col-md-12 text-left"><h3>Parametros de Configuración</h3></div>
+
+      <div class="text-center col-xs-12 col-md-12"><br><br>
+          <form  action="/configurar/"  method="POST">
+            {% csrf_token %}
+            <fieldset>   
+
+            <div class="pre-scrollable">
+              <div class="container">    
+                <div class="col-xs-6 col-md-6 ">
+                  <div class="panel panel-default">             
+                    <div class="panel-heading">Peso</div>  
+                    <div class="panel-body">
+                      <div class="col-xs-12 col-md-12 ">
+                        <div class="col-xs-3 col-md-3 text-left"><label>Muy Bien:</label><input class="form-control text-right" name="pesoMB" type="number" value="{{pesoMB}}" id="ppesoMB" ></div> 
+                        <div class="col-xs-3 col-md-3 text-left"><label>Bien:</label><input class="form-control text-right" name="pesoB" type="number" value="{{pesoB}}" id="ppesoB" ></div>
+                        <div class="col-xs-3 col-md-3 text-left"><label>Regular:</label><input class="form-control text-right" name="pesoR" type="number" value="{{pesoR}}" id="ppesoR" ></div>
+                        <div class="col-xs-3 col-md-3 text-left"><label>Mal:</label><input class="form-control text-right" name="pesoM" type="number" value="{{pesoM}}" id="ppesoM" ></div>
+                      </div>            
+                    </div>
+                  </div>   
+                </div>        
+              </div>
+              <br><br> 
+              <div class="container">
+                <div class="col-xs-12 col-md-12 text-left"><label>Categorias:</label></div>
+                <div class="col-xs-9 col-md-9"><input class="form-control text-left" name="categorias" type="text" value="{{categorias}}" id="pcategorias" ></div>
+              </div>
+              <br><br>
+
+
+              <div class="container"> 
+                <div class="col-xs-5 col-md-5 ">
+                  <div class="panel panel-default">
+                    <div class="panel-heading">Evaluación Anual</div>
+                    <div class="panel-body">
+                      <div class="col-xs-3 col-md-3 text-left"><label>Superior:</label><input class="form-control text-right" name="eva_S" type="number" value="{{eva_S}}" id="evaS" ></div>
+                      <div class="col-xs-3 col-md-3 text-left"><label>Adecuado:</label><input class="form-control text-right" name="eva_A" type="number" value="{{eva_A}}" id="evaA" ></div>
+                      <div class="col-xs-3 col-md-3 text-left"><label>Deficiente:</label><input class="form-control text-right" name="eva_D" type="number" value="{{eva_D}}" id="evaD" ></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+                  <br><br>
+              <div class="container">
+                <div class="col-xs-7 col-md-7 ">
+                  <div class="panel panel-default">
+                    <div class="panel-heading">Reportes</div>
+                    <div class="panel-body">
+                        <div class="col-xs-12 col-md-12 text-left"><label for="ppiepag" class="text-left">Pie de pagina:</label></div>
+                        <div class="col-xs-12 col-md-12"> <input class="form-control text-left" name="Pie" type="text" value="{{Pie}}" id="ppiepag" ></div>
+                        <br>&nbsp;<br>
+                        <div class="col-xs-12 col-md-12 text-left"><label for="pEncab" class="text-left">Encabezado de pagina:</label></div>
+                        <div class="col-xs-12 col-md-12"> <input class="form-control text-left" name="Encab" type="text" value="{{Encab}}" id="pEncab" ></div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>  
+              </div>
+              <br><br>
+            
+      </div>
+            </div>
+
+            <br>
+            <br> 
+            <div class="container">
+            <div class="col-xs-2 col-md-2"><input type="submit" value="Guardar" class="btn btn-primary"/></div></div>
+            </div>
+            </fieldset>          
+          </form>
+
+    </div> 
+    </div> 
+    </div>  
+
+   <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"></script>    
+</body>
+</html>
+
+
+        
+

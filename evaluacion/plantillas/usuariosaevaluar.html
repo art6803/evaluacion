@@ -1,0 +1,33 @@
+<table class="table table-bordered ">
+   <thead>
+        <th># Expediente</th>
+        <th># Identidad</th>
+        <th>Nombre</th>
+        <th>Cargo</th>
+        <th><a class="btn btn-default btn-xs " onclick="Agregar_usuario('{{evaluador.noexp}}');" >
+            <span style=" color: blue" class="glyphicon glyphicon-plus" title="Añadir Trabajador" ></span></a></th>
+
+
+    </thead>
+
+
+
+   {% for elemento in sujetos %}
+    <tr id = "exp{{elemento.noexp}}">  
+        <td align="center" >
+          
+        {{elemento.noexp}} </td>
+        <td  align="center" >{{elemento.cid}}</td>
+        <td>{{elemento.nombre}}</td>
+        <td>{{elemento.cargo}}</td>
+
+
+        <td class="btngrid lineagrid">
+            <a class="btn btn-default btn-xs " onclick="borrar_uaeval('{{elemento.noexp}}');" >
+            <span style=" color: #ff4f00" class="glyphicon glyphicon-trash" title="" ></span></a>
+        </td>
+      
+    </tr>
+    {% endfor %}
+
+    </table>

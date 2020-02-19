@@ -1,0 +1,216 @@
+{% extends 'nombase.html' %}
+
+  {% block titulo %} Nomenclador de areas {% endblock %}
+
+   {% block javascript %}
+
+
+
+		document.onmousedown=disableclick;
+		status="Right Click Disabled";
+		function disableclick(event)
+		{
+	  		if(event.button==2) {
+	     		alert(status);
+	     		return false;
+	   		}
+		}
+
+
+
+        function borrar_area(area) {
+            var y = new XMLHttpRequest();
+            y.onload = function() {
+
+                for (var i = 0; i <= 4; i++) {
+                  alert(y.response);
+                  window.location.href = '../';
+
+                };
+             };
+            y.open('GET', '/borrar_area/?id='+area);
+            y.send();
+
+        };
+
+
+        function trabajador_area(area) {
+            var y = new XMLHttpRequest();
+            y.onload = function() {
+
+                    $('#prueba1234').html(y.response);
+                    $('#modificarform').modal('show');
+
+            };
+            y.open('GET', '/trabaj_area/?id='+area);
+            y.send();
+
+
+
+            return;
+        };
+
+        function modificar_area(area) {
+            /* document.getElementById('frameprcpl').src = src; */
+
+            ver_editar(area);
+            return;
+        };
+
+
+        function ver_editar (area) {
+
+          var y = new XMLHttpRequest();
+            y.onload = function() {
+
+                /*var resp_array = y.response.split(",");
+
+                for (var i = 0; i <= 4; i++) {
+                  var campo = resp_array[i];
+                      campo = campo.split("=");
+                  var nombre = campo[0];
+                  var valor = campo[1];
+                  nombre = '#fm'+nombre+'_value';
+                  var obj = $(nombre);
+                  obj
+                  obj.innerHTML = valor;
+                  obj.HTML = valor;
+
+                    }*/
+
+                    $('#prueba1234').html(y.response);
+                    $('#modificarform').modal('show');
+
+            };
+            y.open('GET', '/area/?id='+area);
+            y.send();
+
+          };
+
+
+      function importar() {
+      var fichero =  "file:\\\\" +$('#importarfichero #id_fichero').val().trim();
+
+        var x = new XMLHttpRequest();
+        x.onload = function() {
+            // Create a form
+            var fd = new FormData();
+            fd.append("upfile", x.response); // x.response is a Blob object
+            fd.append("csrfmiddlewaretoken", "{{ csrf_token }}");
+
+            // Upload to your server
+            var y = new XMLHttpRequest();
+            y.onload = function() {
+                alert('Fichero subido!!');
+            };
+            y.open('POST', '/gestion/prova/');
+            y.send(fd);
+        };
+        x.responseType = 'blob';
+        x.open('GET', fichero, true);
+        x.send();
+      };
+
+
+
+          function UpdateVars(){
+
+            $('#tabladin').modal('hide');
+            filas = $('#id_filas').val();
+            columnas = $('#id_columnas').val();
+            var htmlStr = '';
+            texto = '';
+            for (var i = 1; i <= columnas; i++) {
+                id = "#id_col"+i;
+                htmlStr = $(id).html();
+                htmlStr.replace(';','_');
+                texto = texto + htmlStr+":"+i + ";"
+            }
+            $('#fencabezados').val(texto);
+            // actualiza el input que tiene los textos de las columnas
+
+            texto = '';
+            for (var i = 1; i <= filas; i++) {
+                id = "#id_linea"+i;
+                htmlStr = $(id).html();
+                htmlStr.replace(';','_');
+                texto = texto + htmlStr+":"+i + ";"
+
+            }
+            $('#flineas').val(texto);
+            // actualiza el input que tiene los textos de las lineas
+
+            texto = '';
+            for (var i = 2; i <= columnas; i++) {
+                id = "#id_total"+i;
+                htmlStr = $(id).html();
+                htmlStr.replace(';','_');
+                texto = texto + htmlStr+";"
+            };
+            texto[texto.length - 1] = "";
+            $('#ftotales').val(texto);
+            // actualiza el input que tiene los datos de los campos que se van a totalizar
+            return ;
+        }
+{% endblock %}
+
+
+	{% block funcbuscar %}buscar_area({{elemento.id}});{% endblock %}
+	{% block tituloh %}Nomenclador de Areas{% endblock %}
+
+
+{% block contenido %}
+    <table class="table table-bordered ">
+
+    <thead><th hidden="hidden"></th>
+        <th>Nombre</th>
+        <th></th>
+        <th style="text-align:right;margin-left:auto;margin-right:0;" >
+           <a class="btn btn-default btn-xs " onclick="ver_editar({{-1}});" >
+            <span style=" color: blue" class="glyphicon glyphicon-plus" title="Crear un area nueva" ></span></a></th>
+    </thead>
+
+    {% for elemento in areas %}
+         {% if elemento.id > 1 %}
+
+	  <tr><td hidden="hidden" class="action-checkbox"></td>
+
+	      <td class=" text-left"  > &nbsp;&nbsp;&nbsp;{{elemento.nombre}}</td>
+       <!-- <td class="btngrid lineagrid">
+            <a class="btn btn-default btn-xs " href="/trabaj_area/?opr=v&id={{elemento.id}}" >
+            <span style=" color: #3A6FB3" class="glyphicon glyphicon-user" title="Asignar Area <{{ elemento.nombre}}> a trabajadores " ></span></a>
+        </td> -->
+        <td class="btngrid lineagrid">
+            <a class="btn btn-default btn-xs " href="/borrar_area/?id={{elemento.id}}" >
+            <span style=" color: #ff4f00" class="glyphicon glyphicon-trash" title="Borrar Area <{{ elemento.nombre}}>" ></span></a>
+        </td>
+        <td class="btngrid lineagrid">
+            <a class="btn btn-default btn-xs " onclick="modificar_area({{elemento.id}});" >
+            <span style=" color: #4C8FD6" class="glyphicon glyphicon-pencil" title="Modificar Area <{{ elemento.nombre}}>" ></span></a>
+        </td>
+    </tr>
+        {% endif %}
+    {% endfor %}
+	</table>
+{% endblock %}
+{% block contenido1 %}
+
+	<ul class="pager pull-right">
+        <!-- li class="previous" ><a href="/acapite/crear" onclick="">Nuevo</a></li> -->
+
+        {% if areas.has_previous %}
+            <li class="previous"><a href="/areas/?pag=1">Inicio</a></li>
+            <li ><a href="/areas/?pag={{ areas.previous_page_number }}">Anterior</a></li>
+        {% endif %}
+
+        {% if areas.has_next %}
+            <li><a href="/areas/?pag={{ areas.next_page_number }}">Siguiente</a></li>
+            <li class=""><a href="/areas/?pag={{ areas.paginator.num_pages }} ">Final</a></li>
+        {% endif %}
+        <li class = "next  disabled"><a id= "paginaactual" href="/areas/?pag={{ areas.number }}"> pag. {{ areas.number }} de  {{ areas.paginator.num_pages }}</a><li>
+    </ul>
+	  <div id = "prueba1234">
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,161 @@
+{% extends 'baseeval.html' %}
+
+{% block estilo %}
+.ayuda{
+
+  color: black;
+  background-color:yellow;
+}
+
+{% endblock %}
+
+   {% block javascript %}
+
+
+      var expacum = "";
+
+      function evaluar_usuario (exp) {
+        expacum = "";
+        var y = new XMLHttpRequest();
+            y.onload = function() {   
+
+                $('#prueba1234').html(y.response);
+                $('#modificarform').modal('show');
+
+            };
+            y.open('GET', '/evaluar/?evaluador={{evaluador.noexp}}&exp='+exp);
+            y.send();      
+
+      };
+    
+
+      function seleccionar (exp) {
+     
+         if ($(exp).hasClass("ok")){
+            $(exp).removeClass("ok");
+            $(exp).removeClass("glyphicon-ok");
+            $(exp).addClass("glyphicon-unchecked");
+            $(exp).css("color","white");
+            expacum = expacum.replace(exp, "");
+
+          }else{
+            $(exp).addClass("ok");
+            $(exp).addClass("glyphicon-ok");
+            $(exp).removeClass("glyphicon-unchecked");
+            $(exp).css("color","lime");
+            expacum = expacum + exp;
+
+          };  
+      };
+
+      function modificar (exp) {
+
+        while (expacum.indexOf("#a") >= 0)
+        {
+             expacum = expacum.replace("#a", ","); 
+        };
+        if (expacum[0]== ','){
+          expacum = expacum.replace(",", ""); 
+        };
+        var noexp = "{{evaluador.noexp}}";    
+        $('#modificarform').modal('hide');
+
+
+        var y = new XMLHttpRequest();
+            y.onload = function() {   
+              $('#tabla').html(y.response);
+
+            };
+            y.open('GET', '/seleccionar_usuario/?exp={{evaluador.noexp}}&usuarios='+expacum+'');
+            y.send();
+
+      };
+{% endblock %}
+  
+{% block contenido %} 
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xs-1 col-md-1"></div>
+      <div class="col-xs-10 col-md-10">
+
+  	   <div class="col-xs-6 col-md-6"><h5>Evalua a:</h5> </div>
+       <div class="col-xs-2 col-md-2 ">
+            <h5 class="btn btn-default btn-xs pull-right ayuda"><a  href = "/a/?id=0" target="_blank" data-placement="top" data-toggle="tooltip" title="Click aqui para ver la ayuda " ><img src="{{STATIC_URL}}img/ayuda1.png" alt= "" style="width:16px;16px;"> <b> Ver la Ayuda &nbsp;&nbsp;</b></a> </h5>
+       </div>     
+       <div class="col-xs-2 col-md-2 ">
+          {% if evaluador.cpl %}
+               <h5 class="btn btn-default btn-xs pull-right" ><a data-toggle="tooltip" title="Ver el listado de cpl para cuadros" data-placement="top" href = "/vercpl/?evaluador={{evaluador.noexp}}&exp={{evaluador.noexp}}" ><span style=" color: #428BCA" class="glyphicon glyphicon-list" ></span> <b> Listado de CPL de Cuadros &nbsp;&nbsp;</b></a> </h5><br><br>
+          {% endif %}
+       </div>
+       <div class="col-xs-2 col-md-2 ">
+          {% if evaluador.categoria == 'C' %}
+               <h5 class="btn btn-default btn-xs pull-right" ><a data-toggle="tooltip" title="Auto evaluacion para los cuadros" data-placement="top" href = "/evaluar/?evaluador={{evaluador.noexp}}&exp={{evaluador.noexp}}" ><span style=" color: #428BCA" class="glyphicon glyphicon-font"  ></span> <b> Autoevaluacion&nbsp;&nbsp;</b></a> </h5><br><br>
+          {% endif %}
+        </div>
+ 	      <br><br>
+  	     <div id = "tabla">
+
+          <table class="table table-bordered ">
+           <thead>
+                <th># Expediente</th>
+                <th># Identidad</th>
+                <th>Nombre</th>
+                <th>Cargo</th>
+                <th width=25>&nbsp;</th>
+            </thead>
+
+             {% for elemento in sujetos %}
+              <tr id = "exp{{elemento.noexp}}">  
+                  <td align="center"   >
+                     {% if  elemento.completo %}
+                    <a data-toggle="tooltip" title="Evaluar al trabajador  {{elemento.nombre}} " data-placement="right"   href = "/evaluar/?evaluador={{evaluador.noexp}}&exp={{elemento.noexp}}" > <b> {{elemento.noexp}} </b></a>
+                    {% else %}
+                       <b> {{elemento.noexp}} </b>
+                    {% endif %}
+                  </td>  
+                  <td  align="center" >{{elemento.cid}}</td>
+                  <td>{{elemento.nombre}}</td>
+                  <td   {% if not elemento.completo %} style=" color: red"  data-toggle="tooltip" title= "Cargo sin indicadores especificos " {% endif %} >{{elemento.cargo}}</td>    
+                  <td>  
+
+                      {% if elemento.categoria != 'C' %} 
+
+                       <a class="btn btn-default btn-xs " href="/seleccionar_usuario_ie/?id={{elemento.id}}&evaluador={{evaluador.noexp}}" data-toggle="tooltip" title="Editar los indicadores Especificos del trabajador  {{elemento.nombre}} " data-placement="left">
+                         <span style=" color: #428BCA" class="glyphicon glyphicon-tasks" ></span></a>
+
+                      {% endif %}
+
+                         </td>  
+              </tr>
+              {% endfor %}
+
+          </table>
+
+         </div>
+      </div>
+    </div>
+    <div id = "prueba1234"></div>
+    <!--  Formulario para borrar el usuario   -->  
+    <div id= "borrarform" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content alert-danger">
+          <div class="modal-header ">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Borrar Usuario</h4>
+          </div>
+          <div id = "lineastexto" class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default btn-info" data-dismiss="modal">Cerrar</button>
+            <button  onclick = "borrar();return true;" id = "borrard" type="button" class="btn btn-danger">Borrar</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+   
+   </div>
+   {% endblock %}  
+ 
+
+	

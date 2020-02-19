@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang='es'>
+<head>
+  <meta charset='utf-8'>
+  <title>Nomenclador de Usuarios</title>
+
+
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" media="screen">     
+  <link href="{{STATIC_URL}}css/base.css" rel="stylesheet" media="screen">   
+
+  <script language="Javascript" type="text/Javascript">  
+      var itemsel = 0;
+
+      function seleccionar () {
+         var indgen = $('#sindgen')[0].value;
+     
+         var src='/indesp/?indgen='+indgen+'&cargo={{cargo.id}}';
+         document.getElementById('frindesp').src = src; 
+      };
+
+      function selitem () {
+         var indgen = $('#sindgen')[0].value;
+     
+         var src='/indesp/?indgen='+indgen+'&cargo={{cargo.id}}';
+         document.getElementById('frindesp').src = src; 
+      };
+
+       function ver_editar (indexp) {
+
+          var y = new XMLHttpRequest();
+            y.onload = function() {   
+
+                    $('#prueba1234').html(y.response);
+                    $('#modificarform').modal('show');
+
+            };
+            y.open('GET', '/indesp_ver/?id='+indexp+'&cargo={{cargo}}&indgen={{indgen}}' );
+            y.send();
+
+
+
+      
+        
+
+          };
+
+      function modificar (exp) {
+
+        while (expacum.indexOf("#a") >= 0)
+        {
+             expacum = expacum.replace("#a", ","); 
+        };
+        if (expacum[0]== ','){
+          expacum = expacum.replace(",", ""); 
+        };
+        var noexp = "{{evaluador.noexp}}";    
+        $('#modificarform').modal('hide');
+
+
+        var y = new XMLHttpRequest();
+            y.onload = function() {   
+              $('#tabla').html(y.response);
+
+            };
+            y.open('GET', '/seleccionar_usuario/?exp={{evaluador.noexp}}&usuarios='+expacum+'');
+            y.send();
+
+      };
+
+  </script>
+  
+</head>
+<body>
+<div class="col-xs-12  col-md-12">
+<div class="container">
+<h3>{{cargo.nombre}}</h3>
+
+<BR>
+</div>
+
+    <div class="container">
+      <div class="col-xs-11  col-md-11">
+ 
+        <label class="text-info" for="Indicadores">Indicador General :</label>
+        <SELECT onchange="selitem();"  id="sindgen" NAME="Indicadores" SIZE="1" class="dropdown ">   
+            <option selected value="-1"> </OPTION> 
+            {% for elemento in indgen %} 
+              <option value="{{elemento.id}}">{{elemento.nombre}}</OPTION>
+            {% endfor %}
+        </SELECT>   
+       
+        
+
+      </div><!-- /.col-xs-11 -->
+    </div>
+    <hr>
+     <div class="container">
+        <iframe frameborder="0" id="frindesp"  src="" style="margin=0px; height:370px;">
+                                                
+        </iframe>
+
+   </div>
+  </div>  
+
+    <div id = "prueba1234">
+
+
+                             
+    </div>
+
+      
+    
+   <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"></script>    
+</body>
+</html>
+	

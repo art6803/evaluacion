@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html lang='es'>
+<head>
+  <meta charset='utf-8'>
+  <title>Evaluacion de Trabajadores - {% block titulo %}{% endblock %}</title>
+  <link type="image/x-icon" href="{{STATIC_URL}}js/favicon.png" rel="shortcut icon">
+  <link rel='shortcut icon' href='{{STATIC_URL}}js/favicon.png'>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" media="screen">     
+  <link href="{{STATIC_URL}}css/base.css" rel="stylesheet" media="screen">   
+  {% block style_css %}{% endblock %}
+
+<script language="Javascript" type="text/Javascript">   
+
+  function buttononClick(src) {
+            document.getElementById('frameprcpl').src = src; 
+            return;
+        }
+
+
+
+
+
+          function Configurar () {
+
+          var y = new XMLHttpRequest();
+            y.onload = function() {   
+
+                /*var resp_array = y.response.split(",");             
+
+                for (var i = 0; i <= 4; i++) { 
+                  var campo = resp_array[i];
+                      campo = campo.split("=");
+                  var nombre = campo[0];
+                  var valor = campo[1];
+                  nombre = '#fm'+nombre+'_value';
+                  var obj = $(nombre);
+                  obj
+                  obj.innerHTML = valor;
+                  obj.HTML = valor;
+
+                    }*/
+
+                    $('#prueba1234').html(y.response);
+                  $('#modificarform').modal('show');
+            
+
+            };
+            y.open('GET', '/configurar/');
+            y.send();    
+        
+
+          };      
+ </script>
+</head>
+<body>
+<div class="base">
+  <div class="container-fluid">
+    <div class="col-xs-12 col-md-12">
+      <div class="panel panel-default ">
+        <div class="panel-body">          
+         
+          <div style="padding-top:6px; " class="col-xs-10 col-md-10 text-center">
+             <h5 style=" background-color: #f0e6bc" class='pull-left'>Admin.:&nbsp;{{evaluador.nombre}}&nbsp;&nbsp;&nbsp;</h5>
+           <h2 >Control de Evaluaciones</h2></div>
+          <div class="col-xs-2 col-md-2">
+               <a title="Salir del programa" class="btn btn-default btn-xs pull-right" href="/salir/" >
+                   <span style=" color: #428BCA" class="glyphicon glyphicon-off" title="Salir" ></span></a> 
+                <a class="btn btn-default btn-xs pull-right " href="/a/?id=0" style="padding: 0px 3px 2px 3px;" title= "Ayuda para Evaluadores"  > 
+                  <img src="{{STATIC_URL}}img/ayuda.png" alt= "Ayuda para Evaluadores" style="width:16px,16px;">
+               </a>    
+        
+               
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="padding-off container-fluid">
+      <div class="padding-off col-xs-2 col-md-2 ">
+        <div class="list-group">
+          <a onclick="buttononClick('/usuarios/');"     class="list-group-item azul"><b>Trabajadores</b></a>
+          <a onclick="buttononClick('/cargos/');"       class="list-group-item azul"><b>Nomenclador de Cargos</b></a>
+          <a onclick="buttononClick('/areas/');"        class="list-group-item azul"><b>Nomenclador de Areas</b></a>
+          <a onclick="buttononClick('/areastrabaj/');"  class="list-group-item azul"><b>Trabajadores por Area</b></a>
+          <a onclick="buttononClick('/indgen/');"       class="list-group-item azul"><b>Indicadores Generales</b></a>
+          <a onclick="buttononClick('/indcuad/');"      class="list-group-item azul"><b>Indicadores para Cuadros</b></a>
+          <a onclick="buttononClick('/configurar/');"   class="list-group-item azul"><b>Configuración</b></a>
+          {% if esevaluador%}  
+             <a href="/evaluador/?exp={{evaluador.noexp}}" style="background-color:#f0e6bc" class="list-group-item azul"><b>Evaluar</b></a>
+          {% endif %} 
+        </div>
+      </div>
+      <div class=" padding-off col-xs-10 col-md-10">
+        <iframe frameborder="0" id="frameprcpl"  src="/usuarios/" style="margin:0px; height:600px; width:100%">
+                                 
+        </iframe>
+      <div id = "prueba1234">
+                               
+      </div>
+      </div>
+    </div>
+  </div>
+</div>      
+  
+
+   <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"></script>    
+</body>
+</html>

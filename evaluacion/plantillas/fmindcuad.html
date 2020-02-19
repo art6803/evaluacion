@@ -1,0 +1,44 @@
+     
+    <div id= "modificarform" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button  tabindex= "-1" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Editar Indicador para Cuadros</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+            <div class="col-md-1"></div><div class="col-md-1"></div></div>
+            <form  action="/modindcuad/"  method="POST" >
+            {% csrf_token %}
+    
+                  <input name="id"      value="{{indicador.id}}" type="hidden"  id="fmid" >
+                  <input name="oper"      value="e" type="hidden"  id="oper" >
+                  <input name="maxval"      value="{{pesototal}}" type="hidden"  id="maxid" >
+                 <div class = "row">
+                    <div class= "col-xs-3">Orden :</div>
+                    <div class= "col-xs-6"> <input autofocus = "True" name="orden" id="fmorden"  type="text"  class="form-control" value= "{{indicador.orden}}"></div>
+                </div>
+                 <div class = "row">
+                    <div class= "col-xs-3">Indicador :</div>
+                    <div class= "col-xs-6"> <input autofocus = "True" name="nombre" id="fmnombre"  type="text"  class="form-control" value= "{{indicador.nombre}}"></div>
+                </div>
+                 <div class = "row">
+                    <div class= "col-xs-3">Peso :</div>
+                    <div class= "col-xs-6"> <input autofocus = "number" name="peso" id="fmpeso"  type="text"  class="form-control" pattern="[0-9]{1}.[0-9]{2}" value= "{{indicador.peso}}" 
+                     title = "Se aceptan valores desde 0 hasta {{pesototal}} " max="{{pesototal}}" > </div>
+                </div>
+ 
+            <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            <input type="submit" value="Guardar" class="btn btn-primary"/>
+            </div>
+            </form>
+
+          </div>
+          
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal del_glclass -->
+        
+

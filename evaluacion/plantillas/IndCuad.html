@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang='es'>
+<head>
+  <meta charset='utf-8'>
+  <title>Indicadores para Cuadros</title>
+
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" media="screen">     
+  <link href="{{STATIC_URL}}css/base.css" rel="stylesheet" media="screen">   
+  <script language="Javascript" type="text/Javascript">  
+        var indesp_idbk = -1
+
+    
+
+
+
+        function borrar_() {
+
+            var y = new XMLHttpRequest();
+            y.onload = function() {  
+                indesp_idbk = -1;
+ 
+            };
+            y.open('GET', '/borrindcuad/?id='+indesp_idbk+'&usuario={{usuario}}&ind={{indgen}}' );
+            y.send();  
+            indesp_idbk = -1;
+            
+            return;
+        }; 
+  
+        function borrar(indesp_id, texto) {
+            indesp_idbk = indesp_id;
+            tabla = '<table class="table  table-bordered ">'+
+                    '<tr><td><b>Indicador:</b></td><td>'+texto+'</td></tr>' +
+                    '</table>'
+                $('#lineastexto').html(tabla);
+               /* var borrart = '/borrindesp/?id='+indesp_id+'&cargo={{cargo}}&indgen={{indgen}}'
+                $('#borrard').attr('href', borrart);*/
+
+                $('#borrarform').modal('show');
+            return;
+        };
+
+        function ver_editar (indexp) {
+        	var y = new XMLHttpRequest();
+		        y.onload = function() {		
+                $('#prueba1234').html(y.response);
+					      $('#modificarform').modal('show');
+		        };
+		        y.open('GET', '/indesp_ver/?id='+indexp+'&usuario={{usuario}}&indgen={{indgen}}' );
+		        y.send();   
+				};         
+
+  </script>  
+</head>
+<body> 
+   <div class="container">
+    <div class="col-xs-12  col-md-12">
+    <label>Indicadores Especificos</label>
+
+    </div>
+
+    <div class="col-xs-12  col-md-12">
+    <table class="table table-bordered ">
+    <thead><th hidden="hidden"></th>
+        <th width= "50px">No.</th>
+        <th width= "50px">Peso</th>
+        <th>Indicador</th>     
+        <th></th>   
+         <th style="text-align:right;margin-left:auto;margin-right:0;"><a data-toggle="tooltip" data-placement="left" title="Añadir Indicador" class="btn btn-default btn-xs " onclick="ver_editar('-1');" >
+            <span style=" color: blue" class="glyphicon glyphicon-plus" title="Añadir Indicador" ></span></a></th>  
+    </thead>
+    {% if indicador|length > 0 %} 
+
+      {% for elemento in indicador %}
+  	  <tr>
+          <td >{{elemento.orden}}</td>
+  	      <td ><b> {{elemento.peso}} </b></td>
+          <td class="pre-scrollable" >  {{elemento.nombre}}</td>         
+          <td class="btngrid lineagrid">
+              <a class="btn btn-default btn-xs " href="/borrindesp/?id={{elemento.id}}&usuario={{usuario}}&indgen={{indgen}}" data-toggle="tooltip" data-placement="left" title="Borrar Indicador">
+              <span style=" color: #ff4f00" class="glyphicon glyphicon-trash" title="" ></span></a>
+          </td>
+          <td class="btngrid lineagrid">
+              <a class="btn btn-default btn-xs " onclick="ver_editar({{elemento.id}});" data-toggle="tooltip" data-placement="left" title="Editar Indicador">
+              <span style=" color: #4C8FD6" class="glyphicon glyphicon-pencil" title="" ></span></a>
+          </td>
+      </tr>
+      {% endfor %}
+    {% endif %}
+	</table>
+   </div>
+    <div id = "prueba1234">
+                             
+    </div>
+    <!--  Formulario para borrar el usuario   -->  
+    <div id= "borrarform" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content alert-danger">
+          <div class="modal-header ">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Borrar Indicador Especifico</h4>
+          </div>
+          <div id = "lineastexto" class="modal-body">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default btn-info" data-dismiss="modal">Cerrar</button>
+            <a  onclick = "borrar_(); return;" id = "borrard"  data-dismiss="modal" class="btn btn-danger">Borrar</a>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    </div>
+    
+   <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"></script>    
+</body>
+</html>
+	

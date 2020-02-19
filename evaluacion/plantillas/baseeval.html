@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang='es'>
+<head>
+  <meta charset='utf-8'>       
+  <!--[if IE 9]>
+  <link rel="stylesheet" type="text/css" media="all" href="{{STATIC_URL}}css/ie9.css" />
+  <![endif]-->
+  <!--[if IE 8]>
+  <link rel="stylesheet" type="text/css" media="all" href="{{STATIC_URL}}css/ie8.css" />
+  <![endif]-->
+  <!--[if IE 7]>
+  <link rel="stylesheet" type="text/css" media="all" href="{{STATIC_URL}}css/ie7.css" />
+  <![endif]-->
+
+  
+  <title>{% block titulo %}{% endblock %}</title>
+  <link rel='shortcut icon' href='{{STATIC_URL}}img/icono.png'>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" media="screen">     
+  <link href="{{STATIC_URL}}css/base.css" rel="stylesheet" media="screen">   
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+   <style>  
+   {% block estilo %}{% endblock %}
+  </style>
+  <script language="Javascript" type="text/Javascript">  
+   {% block javascript %}{% endblock %}
+  </script>
+</head>
+<body>
+<script type="text/javascript">
+
+    $(document).ready(function(){
+
+        $('[data-toggle="tooltip"]').tooltip();   
+
+    });
+
+    </script>
+<div class="base">
+<!-- <div class="container"> -->
+  <div class="col-xs-12 col-md-12">
+    <div class="panel panel-default ">
+      <div class="panel-body"> 
+        <div class="col-xs-2 col-md-2 text-center">{% block periodo %}{% endblock %}</div>
+        <div class="col-xs-6 col-md-6 text-center"><span > <h2 >Control de Evaluaciones</h2></span>
+                                                           <h5><b>Evaluador : &nbsp;{{evaluador.nombre}}</b></h5>
+        </div>
+        <div class="col-xs-2 col-md-2"></div>
+        <div class="col-xs-2 col-md-2">
+            <a class="btn btn-default btn-xs pull-right "  href="/salir/"  data-toggle="tooltip" title="Salir" data-placement="left" >
+                <span style=" color: #428BCA" class="glyphicon glyphicon-off" title="Salir" ></span>
+            </a>
+
+            <a class="btn btn-default btn-xs pull-right " href="/evaluador/?exp={{evaluador.noexp}}"  data-toggle="tooltip" title=" Ir al Inicio" data-placement="left" >
+                <span style=" color: #428BCA" class="glyphicon glyphicon-home" title="" ></span>
+            </a>  
+            <a class="btn btn-default btn-xs pull-right " href="/a/?id=0" style="padding: 0px 3px 2px 3px;" target="_blank" data-toggle="tooltip" title="Ver la Ayuda" data-placement="left"> 
+                 <img src="{{STATIC_URL}}img/ayuda1.png" alt= "" style="width:16px;16px;">
+            </a> 
+          
+        </div>
+      </div>
+    </div> 
+  </div>
+  <div class="row"></div>
+
+
+  <br>
+<div class="panel panel-default ">
+<div class="panel-body">
+
+{% block encabezado %}   
+{% endblock %}
+
+
+{% block contenido %}         
+{% endblock %}
+
+{% block piedepagina %}   
+{% endblock %}
+    </div>
+  </div>
+  </div>
+ 
+<!-- </div>  -->
+ <!--  <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script> -->
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>    
+</body>
+</html>

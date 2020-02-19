@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html lang='es'>
+<head>
+  <meta charset='utf-8'>
+  <title>Evaluacion de Trabajadores - {% block titulo %}{% endblock %}</title>
+  <link type="image/x-icon" href="{{STATIC_URL}}js/favicon.png" rel="shortcut icon">
+  <link rel='shortcut icon' href='{{STATIC_URL}}js/favicon.png'>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" media="screen">     
+  <link href="{{STATIC_URL}}css/base.css" rel="stylesheet" media="screen">   
+  {% block style_css %}{% endblock %}
+
+<script language="Javascript" type="text/Javascript">   
+
+  function buttononClick(src) {
+            document.getElementById('frameprcpl').src = src; 
+            return;
+        }
+
+  
+ </script>
+</head>
+<body>
+<div class="base">
+<div class="container-fluid">
+  <div class="col-xs-12 col-md-12">
+    <div class="panel panel-default ">
+      <div class="panel-body">
+        <div style="padding-top:6px; " class="col-xs-10 col-md-10 text-center"><span > <h2 >Control de Evaluaciones-Ayuda</h2></span></div>
+       
+    </div>
+  </div>
+  <div class="padding-off container-fluid">
+    <div class="padding-off col-xs-2 col-md-2 ">
+      <div class="list-group">
+        <a onclick="buttononClick('/a/?id=10');"   class="list-group-item azul"><b>Inicio</b></a>
+        <a onclick="buttononClick('/a/?id=20');"   class="list-group-item azul"><b>Definir indicadores específicos</b></a>
+        <a onclick="buttononClick('/a/?id=30');"   class="list-group-item azul"><b>Evaluacion trimestral</b></a>
+        <a onclick="buttononClick('/a/?id=40');"   class="list-group-item azul"><b>Evaluacion anual</b></a>
+      </div>
+    </div>
+    <div class=" padding-off col-xs-10 col-md-10">
+    	<iframe frameborder="0" id="frameprcpl"  src="/a/?id=10" style="margin:0px; height:600px; width:100%">
+                               
+      </iframe>
+    <div id = "prueba1234">
+                             
+    </div>
+    </div>
+  </div>
+</div>
+</div>  
+  
+
+    
+  
+
+   <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"></script>    
+</body>
+</html>

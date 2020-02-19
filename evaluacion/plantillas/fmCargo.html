@@ -1,0 +1,35 @@
+     
+    <div id= "modificarform" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button  tabindex= "-1" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Datos del Cargo</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+            <div class="col-md-1"></div><div class="col-md-1"></div></div>
+            <form  action="/guardar_cargo/" method="POST" id="ModificaCargo">{% csrf_token %}
+                <fieldset>
+                 <input name="id"      value="{{Cargo.id}}" type="hidden"  id="Cargo_id" >
+                 
+                <div class = "row">
+                    <div class= "col-xs-3">Nombre :</div>
+                    <div class= "col-xs-7"> 
+                    <input  autofocus = "True" name="nombre" id="fmnombre"  type="text"  class="form-control text-justify" value= "{{Cargo.nombre}}"></div>
+                </div>               
+                         
+                </fieldset>
+
+                <div class="modal-footer">
+                    <button tabindex= "8" type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button id = "enviard" type="submit"  class="btn btn-primary">Guardar Cambios</button>
+                </div>
+            </form>
+          </div>
+          
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal del_glclass -->
+        
+

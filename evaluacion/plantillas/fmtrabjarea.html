@@ -1,0 +1,54 @@
+     <table class="table table-bordered ">
+
+    <thead><th hidden="hidden"></th>
+        <th>Nombre</th>
+        <th></th>
+        <th style="text-align:right;margin-left:auto;margin-right:0;" >
+           <a class="btn btn-default btn-xs " onclick="ver_editar({{-1}});" >
+            <span style=" color: blue" class="glyphicon glyphicon-plus" title="Crear un area nueva" ></span></a></th>
+    </thead>
+
+    {% for elemento in areas %}
+         {% if elemento.id > 1 %}
+
+	  <tr><td hidden="hidden" class="action-checkbox"></td>
+	  
+	      <td class=" text-left"  >{{elemento.nombre}}</td>
+       <!-- <td class="btngrid lineagrid">
+            <a class="btn btn-default btn-xs " href="/trabaj_area/?opr=v&id={{elemento.id}}" >
+            <span style=" color: #3A6FB3" class="glyphicon glyphicon-user" title="Asignar Area <{{ elemento.nombre}}> a trabajadores " ></span></a>
+        </td> -->
+        <td class="btngrid lineagrid">
+            <a class="btn btn-default btn-xs " href="/borrar_area/?id={{elemento.id}}" >
+            <span style=" color: #ff4f00" class="glyphicon glyphicon-trash" title="Borrar Area <{{ elemento.nombre}}>" ></span></a>
+        </td>
+        <td class="btngrid lineagrid">
+            <a class="btn btn-default btn-xs " onclick="modificar_area({{elemento.id}});" >
+            <span style=" color: #4C8FD6" class="glyphicon glyphicon-pencil" title="Modificar Area <{{ elemento.nombre}}>" ></span></a>
+        </td>
+    </tr>
+        {% endif %}
+    {% endfor %}
+	</table>
+{% endblock %}
+{% block contenido1 %} 
+
+	<ul class="pager pull-right">
+        <!-- li class="previous" ><a href="/acapite/crear" onclick="">Nuevo</a></li> -->                
+
+        {% if areas.has_previous %}
+            <li class="previous"><a href="/areas/?pag=1">Inicio</a></li>
+            <li ><a href="/areas/?pag={{ areas.previous_page_number }}">Anterior</a></li>                
+        {% endif %}
+        
+        {% if areas.has_next %}
+            <li><a href="/areas/?pag={{ areas.next_page_number }}">Siguiente</a></li>
+            <li class=""><a href="/areas/?pag={{ areas.paginator.num_pages }} ">Final</a></li>                
+        {% endif %}
+        <li class = "next  disabled"><a id= "paginaactual" href="/areas/?pag={{ areas.number }}"> pag. {{ areas.number }} de  {{ areas.paginator.num_pages }}</a><li>
+    </ul> 
+	  <div id = "prueba1234">
+                             
+    </div>
+    
+{% endblock %}

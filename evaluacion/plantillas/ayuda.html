@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html lang='es'>
+<head>
+  <meta charset='utf-8'>
+  <link type="image/x-icon" href="{{STATIC_URL}}js/favicon.png" rel="shortcut icon">
+  <link rel='shortcut icon' href='{{STATIC_URL}}js/favicon.png'>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" media="screen">     
+  <link href="{{STATIC_URL}}css/base.css" rel="stylesheet" media="screen">   
+</head>
+<body>
+<div class="base">
+   <div class="container-fluid">  
+                                          
+      <hr>
+      <div class="col-xs-12 col-md-12 col-lg-12">  
+      <p>       
+        <div class="col-xs-3 col-md-3 col-lg-3">      
+        {% if anterior >= 0 %}
+             <a class="btn btn-default btn-xs pull-left " href="/a/?dir=i&id={{anterior}}" style="background-color: #C8E0F6" >
+            <span style=" color: #0026E8" class="glyphicon glyphicon-arrow-left" title="Anterior" ></span>&nbsp;<b>Anterior</b></a>    
+         {% endif %}
+        &nbsp;&nbsp;                     
+        {% if siguiente <= 49 %}
+           <a class="btn btn-default btn-xs pull-left" href="/a/?dir=d&id={{siguiente}}" style="background-color: #C8E0F6" >
+            <span style=" color: #0026E8" class="glyphicon glyphicon-arrow-right" title="Siguiente" ></span>&nbsp;<b>Siguiente</b></a>  
+        {% endif %}
+          <div class= "well" style="min-height: 500px; height:90%;background-color:LightYellow" > 
+            {% for elemento in parrafos %} 
+            <b> <p>&nbsp;&nbsp;&nbsp;{{elemento}} </p>   </b>
+            {% endfor %}  
+          </div> 
+          <div hidden="hidden" > 
+           <form  action="/sa/?id={{item}}" method="post" id="ModificaAyuda">{% csrf_token %}  
+            <fieldset>
+               <input name="item"      value="{{item}}" type="hidden"  id="item" >
+               <div class = "row">
+                  <div class= "col-xs-12"> 
+                  <textarea value= "{{texto}}" autofocus = "True" name="texto" id="fmtexto"  type="text"  class="form-control">{{texto}}</textarea> 
+                  </div>
+              </div>                     
+                       
+             <input type="submit" value="Guardar" class="btn btn-primary"/> 
+             </fieldset  >
+           </form>     
+           </div>
+           
+        </div>        
+      <div class="col-xs-9 col-md-9 col-lg-9">  
+           <img width="{{largo}}%" heigth="{{alto}}%" src="{{STATIC_URL}}img/{{imagen}}"> </img>        
+      </div>   
+      </div>                          
+      
+   </div>
+</div>          
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>     
+</body>
+</html>

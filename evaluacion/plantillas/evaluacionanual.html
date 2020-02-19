@@ -1,0 +1,212 @@
+{% extends 'baseeval.html' %}
+
+   {% block javascript %}
+
+      var expacum = "";
+
+      function evaluar_usuario (exp) {
+        expacum = "";
+        var y = new XMLHttpRequest();
+            y.onload = function() {   
+
+                $('#prueba1234').html(y.response);
+                $('#modificarform').modal('show');
+
+            };
+            y.open('GET', '/evaluar/?evaluador={{evaluador.noexp}}&exp='+exp);
+            y.send();      
+
+      };
+
+
+    
+
+      function seleccionar (exp) {
+     
+         if ($(exp).hasClass("ok")){
+            $(exp).removeClass("ok");
+            $(exp).removeClass("glyphicon-ok");
+            $(exp).addClass("glyphicon-unchecked");
+            $(exp).css("color","white");
+            expacum = expacum.replace(exp, "");
+
+          }else{
+            $(exp).addClass("ok");
+            $(exp).addClass("glyphicon-ok");
+            $(exp).removeClass("glyphicon-unchecked");
+            $(exp).css("color","lime");
+            expacum = expacum + exp;
+
+          };  
+      };
+      function visible (id, encab) {
+
+
+      	
+         
+        if ($(encab).hasClass("glyphicon-chevron-down")){
+        	$(id).collapse('show') 
+            $(encab).removeClass("glyphicon-chevron-down");
+            $(encab).addClass("glyphicon-chevron-up");
+        }
+        else{
+            $(id).collapse('hide')            
+            $(encab).removeClass("glyphicon-chevron-up");
+            $(encab).addClass("glyphicon-chevron-down");
+          };  
+      };
+
+      function modificar (exp) {
+
+        while (expacum.indexOf("#a") >= 0)
+        {
+             expacum = expacum.replace("#a", ","); 
+        };
+        if (expacum[0]== ','){
+          expacum = expacum.replace(",", ""); 
+        };
+        var noexp = "{{evaluador.noexp}}";    
+        $('#modificarform').modal('hide');
+
+
+        var y = new XMLHttpRequest();
+            y.onload = function() {   
+              $('#tabla').html(y.response);
+
+            };
+            y.open('GET', '/seleccionar_usuario/?exp={{evaluador.noexp}}&usuarios='+expacum+'');
+            y.send();
+
+      };
+{% endblock %}
+  
+{% block contenido %} 
+
+	    
+<div class="container-fluid " style= "height: 200px; !inportant">
+ 
+  <div class="col-xs-12 col-md-12">
+    <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Evaluacion Anual: &nbsp;{{aa}}</b>&nbsp;&nbsp;&nbsp;</h4>
+      <table class="table ">
+        <input hidden = "hidden" name="data" id="data"  type="text"  class="" value= "0">
+        <tr>  <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Evaluando a:&nbsp;&nbsp;<b>{{evaluado.nombre}}&nbsp;&nbsp;&nbsp;&nbsp;Exp:&nbsp;&nbsp;{{evaluado.noexp}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cargo:&nbsp;&nbsp;{{evaluado.cargo.nombre}}</b>
+
+        {% for ig in encab %}          
+        &nbsp;&nbsp;&nbsp;&nbsp;{{ig.texto}}:&nbsp;&nbsp;<b>{{ig.eval}}</b>&nbsp;&nbsp;   
+        {% endfor %}
+
+          </td>
+        </tr>
+      </table>  
+  </div> 
+  
+
+
+
+
+
+<div class="col-xs-12 col-md-12 ">   
+
+	
+
+
+
+  <form  action="/addeval_a/" method="post" id="Modificaeval">{% csrf_token %}
+  <fieldset>
+
+    {% for ig in encab %}          
+       <input name="ind{{ig.item}}"   value="{{ig.eval}}"  type="hidden"   >
+    {% endfor %}
+
+
+   <input name="idcargo"      value="{{evaluado.cargo.id}}" type="hidden"   >
+
+   <input name="aa"           value="{{aa}}"                type="hidden"   >
+   <input name="evaluado"     value="{{evaluado.noexp}}"    type="hidden"  >
+   <input name="evaluador"    value="{{evaluador.noexp}}"   type="hidden"   >
+
+
+
+     
+       
+
+	<div class="col-xs-12 col-md-12 pre-scrollable"> 
+    {% for ig in indc_a %}   
+
+
+	    <div class="col-xs-12 col-md-12">
+	    	<div class="panel panel-default">
+	  			<div class="panel-heading">
+	    			<h3 class="panel-title">{{ig.texto}}</h3>
+	 			</div>
+	  			<div class="panel-body">
+	                 <textarea class="form-control " id="ind{{ig.item}}" name="ind{{ig.item}}" cols="200" rows="4" aria-required="true">{{ig.eval}}</textarea>
+	            </div> 
+			</div>
+	 	</div>
+	{% endfor %}	
+	{% for ig in pie %}   
+
+	    
+	    <div class="col-xs-12 col-md-12">
+	    	<div class="panel panel-default">
+	  			<div class="panel-heading">
+	    			<h3 class="panel-title">{{ig.texto}}</h3><h6>&nbsp;&nbsp;<b>{{ig.expl}}</b></h6>
+	 			</div>
+	  			<div class="panel-body">
+	                 <textarea class="form-control " id="ind{{ig.item}}" name="ind{{ig.item}}" cols="200" rows="4" aria-required="true">{{ig.eval}}</textarea>
+	            </div> 
+			</div>
+	 	</div>
+	{% endfor %}		 	
+
+   	</div>
+ 	</fieldset>
+<div class="container"> 
+ 	<div class="col-xs-9 col-md-9">
+	    <div class="modal-footer">
+	  	   <a class="btn btn-default " href="/evaluar/?evaluador={{evaluador.noexp}}&exp={{evaluado.noexp}}" >Cerrar</a>
+	       <input type="submit" value="Guardar" class="btn btn-primary"/>
+	     </div>         
+    </div> 
+</div>
+
+  </form>
+
+
+  </div>  
+
+         
+    </div>
+  </div>
+      
+   
+
+
+
+    
+    <div id = "prueba1234">
+                             
+    </div>
+
+    <!--  Formulario para borrar el usuario   -->  
+    <div id= "borrarform" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content alert-danger">
+          <div class="modal-header ">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Borrar Usuario</h4>
+          </div>
+          <div id = "lineastexto" class="modal-body">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default btn-info" data-dismiss="modal">Cerrar</button>
+            <button  onclick = "borrar();return true;" id = "borrard" type="button" class="btn btn-danger">Borrar</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+   
+{% endblock %}
+	

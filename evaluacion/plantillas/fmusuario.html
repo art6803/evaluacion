@@ -1,0 +1,98 @@
+     
+    <div id= "modificarform" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button  tabindex= "-1" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Datos del Trabajador</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+            <div class="col-md-1"></div><div class="col-md-1"></div></div>
+            <form  action="/guardar_usuario/?exp={{usuario.noexp}}" method="post" id="ModificaUsuario">{% csrf_token %}
+                <fieldset>
+                 <input name="id"      value="{{usuario.id}}" type="hidden"  id="usuario_id" >
+                 <input name="pag"      value="{{pag}}" type="hidden"  id="pag" >
+                 <input name="tipo"      value="{{tipo}}" type="hidden"  id="tipo" >
+                 <div class = "row">
+                    <div class= "col-xs-3 text-right">Expediente :</div>
+                    <div class= "col-xs-3"> 
+                    <input  autofocus = "True" name="noexp" id="fmnoexp"  type="text"  class="form-control text-right" value= "{{usuario.noexp}}" pattern="[0-9]{6}"></div> 
+                    
+                    <div class= "col-xs-3 pull-right">
+                    <input autofocus = "True" name="acceso" id="fmacceso"  type="checkbox"  {% if su  %} checked {% endif %} >
+                   
+                    
+                    &nbsp;Administrador</div>
+                </div>
+                <div class = "row">
+                    <div class= "col-xs-3 text-right">Usuario Windows :</div>
+                    <div class= "col-xs-3"> 
+                    <input  autofocus = "True" name="uid" id="fmuid"  type="text"  class="form-control text-right" value= "{{usuario.uid}}" ></div>
+                    <div class= "col-xs-4 pull-right">
+                    <input autofocus = "True" name="cpl" id="fmcpl"  type="checkbox"  {% if usuario.cpl %} checked {% endif %} >
+                   
+                    
+                    &nbsp;Ver Reporte de CPL</div> 
+                </div>
+                 <div class = "row">
+                    <div class= "col-xs-3 text-right">Carne Identidad :</div>
+                    <div class= "col-xs-3 "> 
+                    <input autofocus = "True" name="cid" id="fmcid"  type="text"  class="form-control text-right" value= "{{usuario.cid}}" pattern="[0-9]{11}"></div>  
+                </div>
+                <div class = "row">
+                    <div class= "col-xs-3 text-right">Nombre :</div>
+                    <div class= "col-xs-7"> 
+                    <input  autofocus = "True" name="nombre" id="fmnombre"  type="text"  class="form-control text-justify" value= "{{usuario.nombre}}"></div>
+                </div>
+
+                <div class = "row">
+                    
+                </div>
+                <div class = "row">
+                    <div class= "col-xs-3 text-right">Area :</div>
+                    <div class= "col-xs-6"> 
+                        <SELECT class="form-control " id="fmarea" name="area" size="1">
+                             <OPTION selected value="{{usuario.area.id}}">{{usuario.area.nombre}}</OPTION>
+                             {% for area in areas %}
+                               <OPTION value="{{area.id}}">{{area.nombre}}</OPTION>  
+                             {% endfor %}
+                        </SELECT>  
+                    </div>
+                </div>
+                <div class = "row">
+                    <div class= "col-xs-3 text-right">Categoria :</div>
+                    <div class= "col-xs-3"> 
+                        <SELECT class="form-control " id="fmcategoria" name="categoria" size="1">
+                             <OPTION {% if usuario.categoria == "T" %} selected {% endif %} value="T">Técnicos</OPTION>
+                             <OPTION {% if usuario.categoria == "O" %} selected {% endif %} value="O">Operarios</OPTION>  
+                             <OPTION {% if usuario.categoria == "S" %} selected {% endif %} value="S">Servicio</OPTION>
+                             <OPTION {% if usuario.categoria == "C" %} selected {% endif %} value="C">Cuadros</OPTION>
+                             <OPTION {% if usuario.categoria == "D" %} selected {% endif %} value="D">Directivos</OPTION>
+                        </SELECT>   
+                    </div>
+                </div>   
+                <div class = "row">
+                    <div class= "col-xs-3 text-right">Cargo :</div>
+                    <div class= "col-xs-8"> 
+                        <SELECT class="form-control " id="fmcargo" name="cargo" size="1">
+                          {% for cargo in cargos %}
+                            <OPTION {% if usuario.cargo.id == cargo.id %} selected {% endif %} value="{{cargo.id}}">{{cargo.nombre}}</OPTION>
+                          {% endfor %}                              
+                        </SELECT>  
+                    </div>
+                </div>            
+                </fieldset>
+
+                <div class="modal-footer">
+                    <button tabindex= "8" type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button id = "enviard" type="submit"  class="btn btn-primary">Guardar Cambios</button>
+                </div>
+            </form>
+          </div>
+          
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal del_glclass -->
+        
+

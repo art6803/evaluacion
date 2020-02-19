@@ -1,0 +1,138 @@
+{% extends 'baseeval.html' %}
+
+   {% block javascript %}
+
+
+      var expacum = "";
+
+      function evaluar_usuario (exp) {
+        expacum = "";
+        var y = new XMLHttpRequest();
+            y.onload = function() {
+
+                $('#prueba1234').html(y.response);
+                $('#modificarform').modal('show');
+
+            };
+            y.open('GET', '/evaluar/?evaluador={{evaluador.noexp}}&exp='+exp);
+            y.send();
+
+      };
+
+
+
+
+      function seleccionar (exp) {
+
+         if ($(exp).hasClass("ok")){
+            $(exp).removeClass("ok");
+            $(exp).removeClass("glyphicon-ok");
+            $(exp).addClass("glyphicon-unchecked");
+            $(exp).css("color","white");
+            expacum = expacum.replace(exp, "");
+
+          }else{
+            $(exp).addClass("ok");
+            $(exp).addClass("glyphicon-ok");
+            $(exp).removeClass("glyphicon-unchecked");
+            $(exp).css("color","lime");
+            expacum = expacum + exp;
+
+          };
+      };
+
+      function modificar (exp) {
+
+        while (expacum.indexOf("#a") >= 0)
+        {
+             expacum = expacum.replace("#a", ",");
+        };
+        if (expacum[0]== ','){
+          expacum = expacum.replace(",", "");
+        };
+        var noexp = "{{evaluador.noexp}}";
+        $('#modificarform').modal('hide');
+
+
+        var y = new XMLHttpRequest();
+            y.onload = function() {
+              $('#tabla').html(y.response);
+
+            };
+            y.open('GET', '/seleccionar_usuario/?exp={{evaluador.noexp}}&usuarios='+expacum+'');
+            y.send();
+
+      };
+{% endblock %}
+
+{% block contenido %}
+
+<div class="container-fluid">
+
+
+    <div class="col-xs-12 col-md-12">
+    <h5>Evaluando a:</h5>
+        <table class="table ">
+        <input hidden = "hidden" name="data" id="data"  type="text"  class="" value= "0">
+          <tr>  <td><b>{{evaluado.noexp}}&nbsp;{{evaluado.nombre}}&nbsp;&nbsp;&nbsp;{{evaluado.cargo.nombre}}</b></td>
+          </tr>
+        </table>
+  </div>
+
+
+  <div class="col-xs-12 col-md-12">
+  	<!--div id = "tabla" -->
+
+
+        {% for a in aa %}
+          <div class="col-xs-2 col-md-2" style="padding: 2px;">
+          <table class="table  ">
+          <thead><th class="text-center">{{a.num}} </th><th> </th></thead>
+          {% for mes in a.meses %}
+            <tr><td id = "{{mes.num}}"  >
+                <a  data-toggle="tooltip"
+                    title="Editar evaluacion {{mes.nombre}}"
+                    data-placement="top"
+                    href = "/eval{{accion}}/?mes={{mes.num}}&evaluado={{evaluado.noexp}}&evaluador={{evaluador.noexp}}&a={{a.num}}" >  {{mes.nombre}} </a>
+                </td>
+            <td class="btngrid lineagrid">
+              {% if mes.color == '21AE01' %}
+                  <a class="btn  btn-xs" href ="/printeval{{accion}}/?a={{a.num}}&mes={{mes.num}}&evaluado={{evaluado.noexp}}&evaluador={{evaluador.noexp}}"
+                   data-toggle="tooltip" title="Imprimir evaluacion {{mes.nombre}}" data-placement="top" >
+              {% else %}
+                  <a class="btn  btn-xs" >
+              {% endif %}
+               <span style=" color: #{{mes.color}}" class="glyphicon glyphicon-print" title="Imprimir evaluación" ></span></a>
+
+            </td>
+            <td></td></tr>
+          {% endfor %}
+          </table>
+          </div>
+        {% endfor %}
+
+    <!--/div  -->
+  </div>
+  <div class="col-xs-1 col-md-1"></div>
+</div>
+
+<div id = "prueba1234"></div>
+
+<!--  Formulario para borrar el usuario   -->
+<div id= "borrarform" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content alert-danger">
+      <div class="modal-header ">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Borrar Usuario</h4>
+      </div>
+      <div id = "lineastexto" class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-info" data-dismiss="modal">Cerrar</button>
+        <button  onclick = "borrar();return true;" id = "borrard" type="button" class="btn btn-danger">Borrar</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+{% endblock %}
